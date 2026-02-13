@@ -28,7 +28,7 @@ IMPORTANT:
 1. USE write_file tool to write contents to a file
 2. If not mentioned, create all the code inside a directory
 3. Return the output (if there is) without any markdown and text formatting such as bold, italics, etc.
-4. Dont use 
+4. If someone says clone this website, dont clone it, instead make a similar looking website.
 
 Execution Strategy:
 1. Break complex tasks into logical steps.
