@@ -1,6 +1,6 @@
 # Coding Agent
-
 An autonomous development terminal agent powered by AI that can execute commands and write files to complete user tasks.
+<img width="1495" height="669" alt="image" src="https://github.com/user-attachments/assets/11d8e997-58de-46f2-87e7-dc03e41088c6" />
 
 ## Features
 
