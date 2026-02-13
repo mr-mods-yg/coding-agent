@@ -91,3 +91,65 @@ export const writeFileTool = tool({
         }
     },
 });
+
+function readRecursive(dir: string, baseDir: string): string[] {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    let results: string[] = [];
+
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        const relativePath = path.relative(baseDir, fullPath);
+
+        if (entry.name.startsWith(".")) continue; // ignore hidden
+        if (entry.name.startsWith("node_modules")) continue; // ignore node_modules folder
+        if (entry.name.startsWith("dist")) continue; // ignore dist folder
+
+        if (entry.isDirectory()) {
+            results.push(`📁 ${relativePath}`);
+            results = results.concat(readRecursive(fullPath, baseDir));
+        } else {
+            results.push(`📄 ${relativePath}`);
+        }
+    }
+
+    return results;
+}
+
+export const readDirectoryTool = tool({
+    description: "Read directory recursively",
+    inputSchema: z.object({
+        dirPath: z.string().describe("Path of the directory to read"),
+    }),
+    execute: async ({ dirPath }) => {
+        const start = Date.now();
+        const time = new Date().toLocaleTimeString();
+
+        console.log(chalk.yellow(`\n[${time}] [READ] ${dirPath}`));
+
+        try {
+            const resolvedPath = path.resolve(process.cwd(), dirPath);
+
+            if (!fs.existsSync(resolvedPath)) {
+                throw new Error("Directory does not exist");
+            }
+
+            const tree = readRecursive(resolvedPath, resolvedPath);
+
+            const duration = Date.now() - start;
+            console.log(chalk.green(`[READ COMPLETE] (${duration}ms)`));
+
+            return {
+                success: true,
+                path: resolvedPath,
+                files: tree.join("\n"),
+            };
+
+        } catch (error: any) {
+            const duration = Date.now() - start;
+            console.log(chalk.red(`[READ ERROR] (${duration}ms)`));
+            console.log(chalk.red(error.message));
+
+            return { success: false, error: error.message };
+        }
+    },
+});
