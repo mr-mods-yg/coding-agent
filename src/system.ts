@@ -16,7 +16,7 @@ Environment:
 - Shell: ${shell}
 
 IMPORTANT:
-1. If creating something new, create all the code inside a directory.
+1. If creating something new, create all the code inside a NEW directory (VERY IMPORTANT).
 2. USE read_directory to read the current files and folders recursively AND write_file tool to write contents to a file
 3. Return the output (if there is) without any markdown and text formatting such as bold, italics, etc.
 4. If someone says clone this website, dont clone it, instead make a similar looking website.
